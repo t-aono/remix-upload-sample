@@ -14,19 +14,14 @@ async function uploadImage({
     throw new Error("Api key not found");
   }
   const imageKit = new ImageKit({ publicKey, privateKey, urlEndpoint });
-  return imageKit
-    .upload({
-      file,
-      fileName,
-      folder: "test-folder",
-    })
-    .then((response) => {
-      return response.url;
-    })
-    .catch((error) => {
-      console.log(error);
-      return null;
-    });
+  const folder = "test-folder";
+  try {
+    const response = await imageKit.upload({ file, fileName, folder });
+    return response.url;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function convertToBuffer(asyncIterable: AsyncIterable<Uint8Array>) {
